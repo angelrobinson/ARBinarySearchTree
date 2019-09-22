@@ -13,6 +13,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ARBinarySearchTree
 {
@@ -505,11 +506,50 @@ namespace ARBinarySearchTree
         /// <summary>
         /// Note: Must have this method due to implementing ICollection
         /// </summary>
-        /// <param name="array"></param>
-        /// <param name="arrayIndex"></param>
+        /// <param name="array">The one-dimensional Array that is the destination of the elements copied from BST. The Array must have zero-based indexing.</param>
+        /// <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
         public void CopyTo(BSTNode<T>[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            /*
+             *  create empty queue
+             *  push root onto queue
+             *  while queue is not empty 
+             *  -pop first element and add to list
+             *  -if element has left and right node, add them to queue
+             *  
+             */
+
+            Queue<BSTNode<T>> que = new Queue<BSTNode<T>>();
+            List<BSTNode<T>> inOrder = array.ToList();
+            BSTNode<T> current;
+            que.Enqueue(Root);
+
+            while (que.Count != 0)
+            {
+                current = que.Dequeue();
+
+                if (current.LftChild != null)
+                {
+                    que.Enqueue(current.LftChild);
+                }
+
+                if (current.RtChild != null)
+                {
+                    que.Enqueue(current.RtChild);
+                }
+
+                inOrder.Add(current);
+            }
+
+            //sort the list into ascending order
+            inOrder.Sort();
+
+            //move the sorted list to the array
+            inOrder.CopyTo(array);
+            
+
+            
+            
         }
 
 
