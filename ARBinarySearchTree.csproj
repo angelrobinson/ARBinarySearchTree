@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>F:\Move from E Drive\Documents\Visual Studio 2019\Projects\ARBinarySearchTree\ARBinarySearchTree.xml</DocumentationFile>
+  </PropertyGroup>
+
+</Project>
