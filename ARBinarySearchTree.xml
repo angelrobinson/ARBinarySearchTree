@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ARBinarySearchTree</name>
+    </assembly>
+    <members>
+        <member name="T:ARBinarySearchTree.BSTNode`1">
+            <summary>
+            Generic Binary search tree node where the node only has two children properties and one parent property in addition to the element data.
+            This class inherits from the Camparer generic class
+            </summary>
+            <typeparam name="T">data type that the node can be</typeparam>
+        </member>
+        <member name="P:ARBinarySearchTree.BSTNode`1.Data">
+            <summary>
+            element data information
+            </summary>
+        </member>
+        <member name="P:ARBinarySearchTree.BSTNode`1.Parent">
+            <summary>
+            property that holds the parent node
+            </summary>
+        </member>
+        <member name="P:ARBinarySearchTree.BSTNode`1.RtChild">
+            <summary>
+            property that holds the right child (greater than) node
+            </summary>
+        </member>
+        <member name="P:ARBinarySearchTree.BSTNode`1.LftChild">
+            <summary>
+            property that holds the left child (Less than) node
+            </summary>
+        </member>
+        <member name="M:ARBinarySearchTree.BSTNode`1.#ctor">
+            <summary>
+            Default constructor that creates a null node
+            </summary>
+        </member>
+        <member name="M:ARBinarySearchTree.BSTNode`1.#ctor(`0)">
+            <summary>
+            Constructor that takes only one parameter, the element data
+            </summary>
+            <param name="info">the element data</param>        
+        </member>
+        <member name="M:ARBinarySearchTree.BSTNode`1.#ctor(`0,ARBinarySearchTree.BSTNode{`0})">
+            <summary>
+            Constructor that take two parameters, the element data and the parent node
+            </summary>
+            <param name="info">the element data</param>
+            <param name="prnt">the BSTNode that is to be the parent of this node</param>
+        </member>
+        <member name="M:ARBinarySearchTree.BSTNode`1.#ctor(`0,ARBinarySearchTree.BSTNode{`0},ARBinarySearchTree.BSTNode{`0},ARBinarySearchTree.BSTNode{`0})">
+            <summary>
+            Constructor that takes 4 parameters, the element data, parent node, right node, and left node
+            </summary>
+            <param name="info">the element data</param>
+            <param name="prnt"></param>
+            <param name="rt"></param>
+            <param name="lft"></param>
+        </member>
+        <member name="M:ARBinarySearchTree.BSTNode`1.Compare(`0,`0)">
+            <summary>
+            Must implement inherited method 
+            because BSTNode inherits the Comparer generic class
+            this is done in order to allow for traversing through a Binary Search Tree
+            Returns less than 0 if x less than y
+            Returns 0 if x equals y
+            Returns greater than 0 if x is greater than y
+            </summary>
+            <param name="x">first node data to compare</param>
+            <param name="y">second node data to compare</param>
+            <returns></returns>
+        </member>
+        <member name="M:ARBinarySearchTree.BSTNode`1.CompareTo(`0)">
+            <summary>
+            Calls the overridden inherited Compare method
+            </summary>
+            <param name="x"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ARBinarySearchTree.BST`1">
+            <summary>
+            Generic Binary Search Tree
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:ARBinarySearchTree.BST`1.Root">
+            <summary>
+            Gets and sets the first node of the tree
+            </summary>
+        </member>
+        <member name="P:ARBinarySearchTree.BST`1.Count">
+            <summary>
+            keeps track of the number of nodes in the tree
+            NOTE: Must have this property due to implementing ICollection
+            </summary>
+        </member>
+        <member name="P:ARBinarySearchTree.BST`1.IsReadOnly">
+            <summary>
+            BST is not read only
+            NOTE: Must have this property due to implementing ICollection
+            </summary>
+        </member>
+        <member name="M:ARBinarySearchTree.BST`1.Add(`0)">
+            <summary>
+            Adds a new node to the binary search tree using only the data you want held in the node
+            </summary>
+            <param name="itemData">element data you want to be held in the BSTNode</param>
+        </member>
+        <member name="M:ARBinarySearchTree.BST`1.Add(ARBinarySearchTree.BSTNode{`0})">
+            <summary>
+            Adds a new node to the binary search tree
+            Note: Must have this method due to implementing ICollection
+            </summary>
+            <param name="item">the BSTNode to add to the tree</param>
+        </member>
+        <member name="M:ARBinarySearchTree.BST`1.Remove(`0)">
+            <summary>
+            Removes element data out of binary search tree
+            </summary>
+            <param name="itemData">element data you want to remove from the tree</param>
+            <returns></returns>
+        </member>
+        <member name="M:ARBinarySearchTree.BST`1.Remove(ARBinarySearchTree.BSTNode{`0})">
+            <summary>
+            Removes node from the binary search tree
+            Note: Must have this method due to implementing ICollection
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ARBinarySearchTree.BST`1.Minimum">
+            <summary>
+            Find the minimum value that is in the binary tree
+            </summary>
+            <returns>BSTNode element data</returns>
+        </member>
+        <member name="M:ARBinarySearchTree.BST`1.Maximum">
+            <summary>
+            Find the maximum value that is in the Binary Tree
+            </summary>
+            <returns>BSTNode element data</returns>
+        </member>
+        <member name="M:ARBinarySearchTree.BST`1.FindMin(ARBinarySearchTree.BSTNode{`0})">
+            <summary>
+            Finds the minimum element value that is in the tree starting with a specific node.
+            </summary>
+            <param name="startNode">BSTNode that you would like to start with</param>
+            <returns></returns>
+        </member>
+        <member name="M:ARBinarySearchTree.BST`1.FindMax(ARBinarySearchTree.BSTNode{`0})">
+            <summary>
+            Finds the Maximum element value that is in the tree starting with a specific node.
+            </summary>
+            <param name="startNode">BSTNode that you would like to start with</param>
+            <returns></returns>
+        </member>
+        <member name="M:ARBinarySearchTree.BST`1.Clear">
+            <summary>
+            Clears tree
+            Note: Must have this method due to implementing ICollection
+            </summary>
+        </member>
+        <member name="M:ARBinarySearchTree.BST`1.Contains(ARBinarySearchTree.BSTNode{`0})">
+            <summary>
+            Note: Must have this method due to implementing ICollection
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ARBinarySearchTree.BST`1.CopyTo(ARBinarySearchTree.BSTNode{`0}[],System.Int32)">
+            <summary>
+            Note: Must have this method due to implementing ICollection
+            </summary>
+            <param name="array">The one-dimensional Array that is the destination of the elements copied from BST. The Array must have zero-based indexing.</param>
+            <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
+        </member>
+        <member name="M:ARBinarySearchTree.BST`1.GetEnumerator">
+            <summary>
+            Note: Must have this method due to implementing ICollection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ARBinarySearchTree.BST`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Note: Must have this method due to implementing ICollection
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

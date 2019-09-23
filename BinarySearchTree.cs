@@ -116,7 +116,7 @@ namespace ARBinarySearchTree
     /// Generic Binary Search Tree
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BST<T> : ICollection<BSTNode<T>>
+    public class BST<T> : /*Comparer<BSTNode<T>>,*/ ICollection<BSTNode<T>>
     {
         /// <summary>
         /// Gets and sets the first node of the tree
@@ -156,55 +156,63 @@ namespace ARBinarySearchTree
         public void Add(BSTNode<T> item)
         {
             
+
             if (Root == null)
             {
                 //if root is empty make item the root node
                 Root = item;
+                Count++;
+                return;
             }
-            else
+
+            //make temp variable to hold place in tree
+            BSTNode<T> current = Root;
+
+            //while current is not null go through the tree
+            while (current != null)
             {
-                //make temp variable to hold place in tree
-                BSTNode<T> current = Root;
+                //temp result of compare so that we don't have to continue comparing within each if statement
+                int compResult = item.CompareTo(current.Data);
 
-                //make temp variable to hold previous non-null node so that we can add it as the item parent
-                BSTNode<T> itemParent = new BSTNode<T>(current.Parent.Data);
-
-
-                //while current is not null go through the tree
-                while (current != null)
+                //if root is not empty compare to see if the new item is less than or greater than
+                if (compResult == 0)
                 {
-                    //temp result of compare so that we don't have to continue comparing within each if statement
-                    int compResult = item.CompareTo(current.Data);
-
-                    //if root is not empty compare to see if the new item is less than or greater than
-                    if (compResult == 0)
+                    //if equal do nothing because we don't want duplicates
+                    throw new Exception("Duplicate node: " +item.Data +  ".  We don't allow that");
+                    //return;
+                }
+                else if (compResult < 0)
+                {
+                    if (current.LftChild == null)
                     {
-                        //if equal do nothing because we don't want duplicates
-                        return;
-                    }
-                    else if (compResult < 0)
-                    {
-                        //item is less than root so it needs to be on the left
-                        itemParent = current;
-
-                        //change current to the left child of current                        
-                        current = current.LftChild;
+                        //if left child is empty add item to that node
+                        current.LftChild = item;
+                        item.Parent = current;
+                        current = null;
                     }
                     else
                     {
-                        //item is greater than root so it needs to be on the right
-                        itemParent = current;
-
-                        //change current to the right child of current
+                        //change current to the left child of current                        
+                        current = current.LftChild;
+                    }
+                }
+                else
+                {
+                    if (current.RtChild == null)
+                    {
+                        //if left child is empty add item to that node
+                        current.RtChild = item;
+                        item.Parent = current;
+                        current = null;
+                    }
+                    else
+                    {
+                        //change current to the left child of current                        
                         current = current.RtChild;
                     }
                 }
-
-                //when current is null we assign the item to current 
-                //by assigning it's parent to the previous non-null item.
-                item.Parent = itemParent;
             }
-
+            
             //add to count
             Count++;
             
@@ -232,12 +240,12 @@ namespace ARBinarySearchTree
         /// <returns></returns>
         public bool Remove(BSTNode<T> item)
         {
-            
+            if (Root == null)
+            {
+                throw new NullReferenceException("This is an empty tree.");
+            }
             //make temp variable to hold place in tree
             BSTNode<T> current = Root;
-
-            //make temp variable to hold previous non-null node so that we can add it as the item parent
-            //BSTNode<T> itemParent;
 
             //make temp variable to hold the found node to be deleted
             BSTNode<T> toDel;
@@ -253,6 +261,8 @@ namespace ARBinarySearchTree
                 if (compResult == 0)
                 {
                     //if equal then we found the node to be deleted
+                    //remove one from count
+                    Count--;
 
                     //save a copy of the node to delete
                     toDel = current;
@@ -260,6 +270,16 @@ namespace ARBinarySearchTree
                     //if the node to delete doesn't have children, then delete                    
                     if (toDel.LftChild == null && toDel.RtChild == null)
                     {
+                        //null out the reference to the node to be deleted on the parent
+                        if (toDel.Parent.LftChild.Equals(toDel))
+                        {
+                            toDel.Parent.LftChild = null;
+                        }
+                        else if (toDel.Parent.RtChild.Equals(toDel))
+                        {
+                            toDel.Parent.RtChild = null;
+                        }
+
                         //make sure parent is null
                         if (toDel.Parent != null)
                         {
@@ -271,7 +291,17 @@ namespace ARBinarySearchTree
                         //if there isn't a right child on the node to delete, 
                         //but there is a left child then we make that left childs parent the same 
                         //as the one that is being deleted
-                        current.LftChild.Parent = toDel.Parent;
+                        toDel.LftChild.Parent = toDel.Parent;
+
+                        //change out the reference to the node to be deleted on the parent
+                        if (toDel.Parent.LftChild.Equals(toDel))
+                        {
+                            toDel.Parent.LftChild = toDel.LftChild;
+                        }
+                        else if (toDel.Parent.RtChild.Equals(toDel))
+                        {
+                            toDel.Parent.RtChild = toDel.LftChild;
+                        }
 
                         //after reassigning the parent to the new replacement node,
                         //we need to null out the parent of the node to delete, 
@@ -284,7 +314,17 @@ namespace ARBinarySearchTree
                         //if there isn't a left child on the node to delete, 
                         //but there is a right child then we make that right childs parent the same 
                         //as the one that is being deleted
-                        current.RtChild.Parent = toDel.Parent;
+                        toDel.RtChild.Parent = toDel.Parent;
+
+                        //change out the reference to the node to be deleted on the parent
+                        if (toDel.Parent.LftChild.Equals(toDel))
+                        {
+                            toDel.Parent.LftChild = toDel.RtChild;
+                        }
+                        else if (toDel.Parent.RtChild.Equals(toDel))
+                        {
+                            toDel.Parent.RtChild = toDel.RtChild;
+                        }
 
                         //after reassigning the parent to the new replacement node,
                         //we need to null out the parent of the node to delete, 
@@ -293,43 +333,89 @@ namespace ARBinarySearchTree
                         toDel.RtChild = null;
                     }
                     else
-                    {
+                    { 
                         //the node to be deleted has both left and right children
 
                         //find the smallest value on the right side of this sub tree
                         //with current being the root
-                        //TODO: need to shift all parent and sibling nodes over
-                        BSTNode<T> replacement = FindMin(current);
+                        BSTNode<T> replacement = FindMin(current.RtChild);
 
-                        //remove reference to replacement in it's original parent
-                        replacement.Parent.LftChild = null;
+                        //replacements left child now becomes toDel left child
+                        replacement.LftChild = toDel.LftChild;
 
-                        //check to see if the replacement has any right children
-                        var needToAdd = replacement.RtChild;
-
-                        //make the right child of the to be deleted node the right child of the replacement
-                        replacement.RtChild = toDel.RtChild;
-
-                        //make the parent of the to be deleted node right child to the replacement node
-                        toDel.RtChild.Parent = replacement;
-
-                        //make parent of the to be deleted node the new parent of the replacement
+                        //replacement parent now becomes toDel parent
                         replacement.Parent = toDel.Parent;
 
+                        //process the right side of the toDel tree with a queue
+                        Queue<BSTNode<T>> adjustment = new Queue<BSTNode<T>>();
 
-                        //if replacement has right child need to make it's parent null and then readd it to the tree
-                        if (needToAdd != null)
+                        //start the queue with the right child of toDel
+                        adjustment.Enqueue(toDel.RtChild);
+
+                        //while queue is not empty
+                        while (adjustment.Count !=0)
                         {
-                            replacement.RtChild.Parent = null;
-                            Add(needToAdd);
+                            //pop first node
+                            BSTNode<T> adj = adjustment.Dequeue();
+
+                            if (!adj.Equals(replacement))
+                            {
+                                //add children of the first node to the back of queue
+                                if (adj.LftChild != null)
+                                {
+                                    //if the node was the original parent of the replacement
+                                    //need to null out the reference to the replacement as a child
+                                    if (adj.LftChild.Equals(replacement))
+                                    {
+                                        adj.LftChild = null;
+                                    }
+                                    else
+                                    {
+                                        adjustment.Enqueue(current.LftChild);
+                                    }
+                                }
+
+                                if (adj.RtChild != null)
+                                {
+                                    adjustment.Enqueue(current.RtChild);
+                                }
+
+                                //if the nodes parent is toDel, change the parent to replacement
+                                //and add node to replacements right child
+                                if (adj.Parent.Equals(toDel))
+                                {
+                                    adj.Parent = replacement;
+                                    replacement.RtChild = adj;
+                                }
+
+                                //if the node was a right child of replacement
+                                //null out the node parent as replacement
+                                //and readd to the tree for proper placement
+                                if (adj.Parent.Equals(replacement))
+                                {
+                                    adj.Parent = null;
+                                }
+                            }
                         }
+
+                        //change out the reference to the node to be deleted on the parent
+                        if (toDel.Parent.LftChild.Equals(toDel))
+                        {
+                            toDel.Parent.LftChild = replacement;
+                        }
+                        else if (toDel.Parent.RtChild.Equals(toDel))
+                        {
+                            toDel.Parent.RtChild = replacement;
+                        }
+
+                        //after adjusting the right side of the toDel tree
+                        //we need to null out the parent of the node to delete, 
+                        //as well as the  child references
+                        toDel.Parent = null;
+                        toDel.RtChild = null;
+                        toDel.LftChild = null;
+
                     }
-
-                    //make current null to stop loop
-                    //current = null; //QUESTION: Why is intelisense saying that this is unnecessary?
-
-                    //remove one from count
-                    Count--;
 
                     //node deleted
                     return true;
@@ -401,6 +487,7 @@ namespace ARBinarySearchTree
                     if (current.LftChild == null)
                     {
                         min = current;
+                        current = null;
                     }
                     else
                     {
@@ -441,13 +528,12 @@ namespace ARBinarySearchTree
                     if (current.RtChild == null)
                     {
                         max = current;
+                        current = null;
                     }
                     else
                     {
                         current = current.RtChild;
                     }
-                    
-                    
                 }
             }
 
@@ -520,7 +606,7 @@ namespace ARBinarySearchTree
              */
 
             Queue<BSTNode<T>> que = new Queue<BSTNode<T>>();
-            List<BSTNode<T>> inOrder = array.ToList();
+            List<BSTNode<T>> inOrder = new List<BSTNode<T>>();
             BSTNode<T> current;
             que.Enqueue(Root);
 
@@ -540,9 +626,6 @@ namespace ARBinarySearchTree
 
                 inOrder.Add(current);
             }
-
-            //sort the list into ascending order
-            inOrder.Sort();
 
             //move the sorted list to the array
             inOrder.CopyTo(array);
@@ -611,5 +694,17 @@ namespace ARBinarySearchTree
             //    }
             //}
         }
+
+        /// <summary>
+        /// Allows to compare nodes within the tree
+        /// </summary>
+        /// <param name="x">first node to compare</param>
+        /// <param name="y">second node to compare</param>
+        /// <returns></returns>
+        //public override int Compare(BSTNode<T> x, BSTNode<T> y)
+        //{
+        //    return x.Compare(x.Data, y.Data);
+            
+        //}
     }
 }
