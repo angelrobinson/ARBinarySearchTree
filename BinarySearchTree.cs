@@ -663,7 +663,7 @@ namespace ARBinarySearchTree
                 current = current.LftChild;
             };
 
-            ////while current is not null go through the tree
+            //while current is not null go through the tree
             //while (current != null)
             //{
             //    //temp result of compare so that we don't have to continue comparing within each if statement
@@ -695,16 +695,6 @@ namespace ARBinarySearchTree
             //}
         }
 
-        /// <summary>
-        /// Allows to compare nodes within the tree
-        /// </summary>
-        /// <param name="x">first node to compare</param>
-        /// <param name="y">second node to compare</param>
-        /// <returns></returns>
-        //public override int Compare(BSTNode<T> x, BSTNode<T> y)
-        //{
-        //    return x.Compare(x.Data, y.Data);
-            
-        //}
+        
     }
 }
